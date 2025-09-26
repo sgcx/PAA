@@ -1,0 +1,51 @@
+import java.util.*;
+
+public class Main {
+  static final int[][] dist = {
+        // A  B  C  D
+        { 0, 6, 1, 8 }, // A
+        { 6, 0, 5, 8 }, // B
+        { 1, 5, 0, 4 }, // C
+        { 8, 8, 4, 0 }  // D
+    };
+
+    static final String[] cidades = { "A", "B", "C", "D" };
+  
+  
+  public static void main(String[] args) {
+    int numCidades = dist.length;
+    boolean[] visitado = new boolean[numCidades];
+
+    int atual = 0; // Começa em A
+    int custoTotal = 0;
+    String rota = cidades[atual];
+
+    visitado[atual] = true;
+
+    for (int i = 1; i < numCidades; i++) {
+        int proximo = -1;
+        int menorDist = Integer.MAX_VALUE;
+
+        // Busca o vizinho mais próximo ainda não visitado
+        for (int j = 0; j < numCidades; j++) {
+          if (!visitado[j] && dist[atual][j] < menorDist) {
+            menorDist = dist[atual][j];
+            proximo = j;
+          }
+        }
+
+        visitado[proximo] = true;
+        custoTotal += menorDist;
+        atual = proximo;
+        rota += " -> " + cidades[atual];
+    }
+
+    // Retorna para a cidade inicial (A)
+    custoTotal += dist[atual][0];
+    rota += " -> " + cidades[0];
+
+    System.out.println("Rota encontrada (vizinho mais próximo):");
+    System.out.println(rota);
+    System.out.println("Custo total: " + custoTotal);
+  }
+}
